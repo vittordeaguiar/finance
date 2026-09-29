@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Excluir movimentação</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+input:focus{outline:2px solid #183f32;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1024px; position: relative; overflow: hidden; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b;">
+<dc-import name="Dashboard" hint-size="1440px,1024px"></dc-import>
+<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(23, 32, 27, 0.4); display: flex; align-items: center; justify-content: center;">
+<div role="alertdialog" aria-labelledby="ex-t" style="width: 480px; background: #fffaf0; border: 1px solid #d2cabb; box-shadow: 0 24px 64px rgba(23, 32, 27, 0.2); display: flex; flex-direction: column;">
+<div style="padding: 32px 32px 24px; display: flex; flex-direction: column; gap: 14px; border-bottom: 1px solid #e0d9cb;">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: {{eyebrowColor}};">{{eyebrow}}</span>
+<button type="button" aria-label="Fechar" disabled="{{busy}}" style="width: 44px; height: 44px; margin-right: -12px; font: inherit; font-size: 22px; color: #526058; background: transparent; border: 0; cursor: pointer;">×</button>
+</div>
+<h2 id="ex-t" style="margin: 0; font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">{{title}}</h2>
+</div>
+<div style="padding: 20px 32px; display: flex; flex-direction: column; gap: 16px;">
+<div style="padding: 16px; background: #f3efe5; border: 1px solid #e0d9cb; display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+<span style="font-size: 17px; font-weight: 500;">Supermercado</span>
+<span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; color: #b42318; white-space: nowrap;">− R$ 412,80</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;">
+<span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: #b42318; background: #f8e8e6; border-radius: 2px;">↘ DESPESA</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #526058;">22 SET 2026</span>
+</div>
+</div>
+<sc-if value="{{askConfirm}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 15px; line-height: 1.6; color: #344139;">A movimentação sai do histórico e o saldo passa de <strong style="font-variant-numeric: tabular-nums;">R$ 4.406,55</strong> para <strong style="font-variant-numeric: tabular-nums;">R$ 4.819,35</strong>. Não dá para desfazer.</p>
+</sc-if>
+</div>
+<div style="padding: 20px 32px; display: flex; flex-direction: row-reverse; justify-content: flex-start; gap: 10px; border-top: 1px solid #e0d9cb; background: #f3efe5;">
+<sc-if value="{{detalhe}}" hint-placeholder-val="{{ false }}">
+<button type="button" style=" height: 48px; padding: 0 20px; font: inherit; font-size: 16px; font-weight: 600; color: #b42318; background: transparent; border: 1px solid #b42318; border-radius: 2px; cursor: pointer;">Excluir movimentação</button>
+</sc-if>
+<sc-if value="{{askConfirm}}" hint-placeholder-val="{{ true }}">
+<button type="button" disabled="{{busy}}" aria-busy="{{busy}}" style=" height: 48px; padding: 0 22px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: {{dangerBg}}; border: 0; border-radius: 2px; cursor: pointer;">{{confirmLabel}}</button>
+</sc-if>
+<button type="button" disabled="{{busy}}" style=" height: 44px; padding: 0 20px; font: inherit; font-size: 16px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #d2cabb; border-radius: 2px; cursor: pointer;">{{secondaryLabel}}</button>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"etapa":{"editor":"enum","options":["confirmar","excluindo"],"default":"confirmar"},"$preview":{"width":1440,"height":1024}}'>
+class Component extends DCLogic {
+renderVals() {
+var e = this.props.etapa || 'confirmar';
+var busy = e === 'excluindo';
+return {
+detalhe: e === 'detalhe', askConfirm: e !== 'detalhe', busy: busy,
+eyebrow: e === 'detalhe' ? 'MOVIMENTAÇÃO' : 'CONFIRMAR EXCLUSÃO',
+eyebrowColor: e === 'detalhe' ? '#183f32' : '#b42318',
+title: e === 'detalhe' ? 'Detalhes.' : 'Excluir esta movimentação?',
+dangerBg: busy ? '#8a4a44' : '#b42318',
+confirmLabel: busy ? 'Excluindo…' : 'Sim, excluir',
+secondaryLabel: e === 'detalhe' ? 'Fechar' : 'Cancelar'
+};
+}
+}
+</script>
+</body>
+</html>

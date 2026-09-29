@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><title>LoginErro.dc.html</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap"><style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+</style><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap"><style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+input:focus{outline:2px solid #183f32;outline-offset:2px}
+</style></head>
+<body style="margin:0">
+
+
+
+
+<div style="width: 1440px; height: 900px; position: relative; overflow: hidden;">
+
+
+<div style="width: 1440px; height: 900px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #f3efe5;">
+<div style="background: #111815; color: #f3efe5; padding: 64px; display: flex; flex-direction: column; justify-content: space-between;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 28px; height: 28px; background: #8ab39e;"></div>
+<span style="font-size: 22px; font-weight: 700; letter-spacing: -0.03em;">Saldo.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 24px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8ab39e;">01 · FINANÇAS PESSOAIS</span>
+<h1 style="margin: 0; font-size: 72px; line-height: 1.02; font-weight: 600; letter-spacing: -0.045em;">Seu dinheiro, <span style="color: #8ab39e;">em ordem.</span></h1>
+<p style="margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.65; color: #abb5ae;">Registre o que entra e o que sai. Saiba o seu saldo sem abrir planilha.</p>
+</div>
+<div style="display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #abb5ae; border-top: 1px solid #2a352e; padding-top: 24px;">
+<span>RECEITAS</span><span>·</span><span>DESPESAS</span><span>·</span><span>SALDO</span>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; padding: 64px;">
+<form style="width: 400px; display: flex; flex-direction: column; gap: 32px;">
+<div style="display: flex; flex-direction: column; gap: 12px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">ACESSO</span>
+<h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Entrar na conta.</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #526058;">Use o email e a senha cadastrados.</p>
+</div>
+
+<div role="alert" style="padding: 14px 16px; background: #f8e8e6; border-left: 3px solid #b42318; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #b42318;">NÃO FOI POSSÍVEL ENTRAR</span>
+<span style="font-size: 15px; line-height: 1.5;">Email ou senha incorretos. Confira e tente de novo.</span>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 20px;">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="email" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">EMAIL</label>
+<input id="email" type="email" value="voce@email.com" placeholder="voce@email.com" style="height: 48px; padding: 0px 16px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-size: 16px; color: rgb(23, 32, 27); background: rgb(255, 250, 240); border: 1px solid rgb(180, 35, 24); border-radius: 2px; box-sizing: border-box;">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between;">
+<label for="senha" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">SENHA</label>
+<a href="RecuperarSenha.dc.html" style="font-size: 14px; font-weight: 500;">Esqueci minha senha</a>
+</div>
+<input id="senha" type="password" value="senhasecreta" style="height: 48px; padding: 0px 16px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-size: 16px; color: rgb(23, 32, 27); background: rgb(255, 250, 240); border: 1px solid rgb(180, 35, 24); border-radius: 2px; box-sizing: border-box;">
+</div>
+</div>
+<button type="submit" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;"><span>Entrar</span><span>→</span></button>
+<p style="margin: 0; padding-top: 20px; border-top: 1px solid #d2cabb; font-size: 14px; color: #526058;">Ainda não tem conta? <a href="#">Criar conta</a></p>
+</form>
+</div>
+</div>
+
+</div>
+</body></html>

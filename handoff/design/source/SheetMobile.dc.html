@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Modal mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+input:focus{outline:2px solid #183f32;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b;">
+<dc-import name="DashboardMobile" hint-size="390px,844px"></dc-import>
+<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(23, 32, 27, 0.4);"></div>
+<form role="dialog" aria-labelledby="sheet-t" style="position: absolute; left: 0; right: 0; bottom: 0; background: #fffaf0; border-top: 1px solid #d2cabb; box-shadow: 0 24px 64px rgba(23, 32, 27, 0.2); display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: center; padding-top: 10px;"><div style="width: 40px; height: 4px; background: #d2cabb;"></div></div>
+<div style="padding: 12px 20px 20px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid #e0d9cb;">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">NOVA MOVIMENTAÇÃO</span>
+<button type="button" aria-label="Fechar" style="width: 44px; height: 44px; margin-right: -12px; font: inherit; font-size: 22px; color: #526058; background: transparent; border: 0; cursor: pointer;">×</button>
+</div>
+<h2 id="sheet-t" style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">{{title}}</h2>
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: {{fg}}; background: {{bg}}; border-radius: 2px;">{{tag}}</span>
+<span style="font-size: 14px; color: #526058;">{{hint}}</span>
+</div>
+</div>
+<div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;">
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="padding: 12px 14px; background: #f8e8e6; border-left: 3px solid #b42318; font-size: 14px; line-height: 1.5;">Revise os campos marcados para salvar.</div>
+</sc-if>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="m-desc" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">DESCRIÇÃO</label>
+<input id="m-desc" type="text" value="{{descVal}}" placeholder="{{descPh}}" disabled="{{saving}}" style="height: 52px; padding: 0 16px; font: inherit; font-size: 17px; color: #17201b; background: #fffaf0; border: 1px solid {{descBorder}}; border-radius: 2px; box-sizing: border-box; opacity: {{fieldOpacity}};">
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #b42318;">Informe uma descrição.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="m-val" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">VALOR</label>
+<div style="display: flex; height: 60px; border: 1px solid {{valBorder}}; border-radius: 2px; background: #fffaf0; opacity: {{fieldOpacity}};">
+<span style="display: flex; align-items: center; padding: 0 16px; font-size: 18px; font-weight: 600; color: {{fg}}; background: {{bg}}; border-right: 1px solid #d2cabb; white-space: nowrap;">{{prefix}}</span>
+<input id="m-val" type="text" inputmode="decimal" value="{{valVal}}" placeholder="0,00" disabled="{{saving}}" style="flex-grow: 1; min-width: 0; padding: 0 16px; font: inherit; font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; color: #17201b; background: transparent; border: 0;">
+</div>
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; color: #b42318;">O valor precisa ser maior que zero.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between;">
+<label for="m-data" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">DATA</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">HOJE</span>
+</div>
+<input id="m-data" type="date" value="2026-09-23" max="2026-09-23" disabled="{{saving}}" style="opacity: {{fieldOpacity}}; height: 52px; padding: 0 16px; font: inherit; font-size: 17px; font-variant-numeric: tabular-nums; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box;">
+<span style="font-size: 13px; color: #526058;">Preenchida com hoje. Altere para lançar algo que já aconteceu.</span>
+</div>
+</div>
+<div style="padding: 12px 20px 28px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #e0d9cb; background: #f3efe5;">
+<button type="submit" disabled="{{saving}}" aria-busy="{{saving}}" style="height: 56px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: {{saveBg}}; border: 0; border-radius: 2px; cursor: pointer;">{{saveLabel}}</button>
+<button type="button" disabled="{{saving}}" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #d2cabb; border-radius: 2px; cursor: pointer;">Cancelar</button>
+</div>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"tipo":{"editor":"enum","options":["receita","despesa"],"default":"receita"},"estado":{"editor":"enum","options":["padrao","erro","salvando"],"default":"padrao"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var r = (this.props.tipo || 'receita') === 'receita';
+var e = this.props.estado || 'padrao';
+var erro = e === 'erro', saving = e === 'salvando';
+var desc = r ? 'Freelance landing page' : 'Supermercado';
+var val = r ? '1.800,00' : '412,80';
+return {
+title: r ? 'Adicionar receita.' : 'Adicionar despesa.',
+tag: r ? '↗ RECEITA' : '↘ DESPESA',
+hint: r ? 'Tipo fixo · soma no saldo' : 'Tipo fixo · subtrai do saldo',
+fg: r ? '#2f6b4f' : '#b42318',
+bg: r ? '#e8f2ec' : '#f8e8e6',
+prefix: r ? '+ R$' : '− R$',
+descVal: erro ? '' : desc,
+descPh: r ? 'Ex.: Salário' : 'Ex.: Supermercado',
+valVal: erro ? '0,00' : val,
+descBorder: erro ? '#b42318' : '#d2cabb',
+valBorder: erro ? '#b42318' : '#d2cabb',
+erro: erro, saving: saving,
+fieldOpacity: saving ? '0.6' : '1',
+saveBg: saving ? '#526058' : '#17201b',
+saveLabel: saving ? 'Salvando…' : (r ? 'Salvar receita' : 'Salvar despesa')
+};
+}
+}
+</script>
+</body>
+</html>

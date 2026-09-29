@@ -1,0 +1,186 @@
+/*
+ * Saldo. — tokens derivados do Design System Burm (território green-deep).
+ * Uso: importar em app/globals.css logo após `@import "tailwindcss";`
+ * As fontes são carregadas via next/font (ver docs/02-design-system.md) e expostas
+ * como --font-space-grotesk e --font-ibm-plex-mono.
+ */
+
+@theme {
+  /* Escalas de marca */
+  --color-green-900: #0d281f;
+  --color-green-800: #14352a;
+  --color-green-700: #183f32;
+  --color-green-600: #315f4c;
+  --color-green-500: #4c7d66;
+  --color-green-400: #77a58e;
+  --color-green-300: #8ab39e;
+  --color-green-200: #a1c5b3;
+  --color-green-100: #c9ded3;
+
+  --color-ink-950: #0b110e;
+  --color-ink-900: #111815;
+  --color-ink-800: #18211c;
+  --color-ink-700: #222d27;
+  --color-ink-600: #344139;
+  --color-ink-500: #526058;
+  --color-ink-400: #69746d;
+
+  --color-bone-50: #fffaf0;
+  --color-bone-100: #f3efe5;
+  --color-bone-200: #e8e1d3;
+  --color-bone-300: #ddd4c3;
+  --color-bone-400: #d2cabb;
+
+  /* Semânticos (tema claro; o escuro, V4, redefine estes mesmos nomes no fim do arquivo) */
+  --color-background: #f3efe5;       /* bone-100: fundo da página */
+  --color-surface: #fffaf0;          /* bone-50: cards, tabela, inputs, modais */
+  --color-surface-muted: #e8e1d3;    /* bone-200: skeleton */
+  --color-text: #17201b;             /* texto primário e ação primária */
+  --color-text-secondary: #526058;   /* ink-500: labels, metadados */
+  --color-border: #d2cabb;           /* bone-400: bordas de cards e inputs */
+  --color-border-subtle: #e0d9cb;    /* divisórias entre linhas */
+  --color-border-strong: #69746d;    /* botão secundário */
+  --color-accent: #183f32;           /* green-700: eyebrows, índices, links, foco */
+  --color-accent-hover: #0d281f;     /* green-900: hover de link (V4) */
+  --color-on-primary: #fffaf0;       /* bone-50: texto sobre botão primário e perigo (V4) */
+  --color-surface-hover: #f3efe5;    /* bone-100: hover do botão secundário (V4) */
+  --color-primary-pending: #526058;  /* ink-500: botão primário em progresso (V4) */
+  --color-text-body: #344139;        /* ink-600: texto corrido em diálogos (V4) */
+
+  /* Slab (bloco preto) */
+  --color-slab: #111815;
+  --color-slab-muted: #222d27;       /* skeleton sobre slab */
+  --color-slab-text: #f3efe5;
+  --color-slab-text-muted: #abb5ae;
+  --color-slab-border: #2a352e;
+  --color-slab-accent: #8ab39e;      /* green-300 */
+
+  /* Receita / despesa */
+  --color-income: #2f6b4f;           /* texto sobre claro */
+  --color-income-bg: #e8f2ec;
+  --color-income-on-slab: #a1c5b3;   /* green-200 */
+  --color-expense: #b42318;
+  --color-expense-bg: #f8e8e6;
+  --color-expense-on-slab: #f0b4ad;
+  --color-danger-pending: #8a4a44;   /* botão perigo em progresso ("Excluindo…") */
+  --color-info: #3f624f;
+  --color-info-bg: #e7eee8;
+
+  /* Tipografia */
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+
+  --tracking-tight: -0.03em;
+  --tracking-display: -0.045em;
+  --tracking-label: 0.08em;
+
+  /* Raios: canto reto é o padrão */
+  --radius-none: 0;
+  --radius-sm: 2px;
+
+  /* Sombras: só modal/sheet e toast */
+  --shadow-modal: 0 24px 64px rgba(23, 32, 27, 0.2);
+
+  /* Movimento */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  --overlay: rgba(23, 32, 27, 0.4);
+  --duration-instant: 120ms;
+  --duration-fast: 180ms;
+  /* V5 (docs/12): teto de 300ms por animação. */
+  --duration-base: 240ms;
+  --duration-slow: 300ms;
+  --stagger: 30ms;
+}
+
+/* Regras base em @layer base para que as utilities do Tailwind possam sobrescrevê-las. */
+@layer base {
+  html { background: var(--color-background); color: var(--color-text); }
+  body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+
+  a { color: var(--color-accent); }
+  a:hover { color: var(--color-accent-hover); }
+
+  :where(button, a, input, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  /* Números financeiros sempre com algarismos tabulares */
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Label mono em caixa alta — usado em eyebrows, labels de campo e cabeçalhos de tabela */
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+}
+
+/*
+ * V4 — Tema escuro (docs/11, Fase 13). Mesmos papéis, tons das escalas acima. `data-theme` vem do cookie
+ * `tema` (app/layout.tsx); sem atributo, vale a preferência do sistema. Os tokens slab-* e *-on-slab não
+ * mudam: o slab já é escuro e, no fundo escuro, se destaca pela borda `slab-border`.
+ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-background: #0b110e;
+  --color-surface: #111815;
+  --color-surface-muted: #222d27;
+  --color-surface-hover: #18211c;
+  --color-text: #f3efe5;
+  --color-text-secondary: #abb5ae;
+  --color-text-body: #d2cabb;
+  --color-border: #344139;
+  --color-border-subtle: #222d27;
+  --color-border-strong: #69746d;
+  --color-accent: #8ab39e;
+  --color-accent-hover: #a1c5b3;
+  --color-on-primary: #111815;
+  --color-primary-pending: #abb5ae;
+  --color-slab: #18211c;
+  --color-income: #a1c5b3;
+  --color-income-bg: #14352a;
+  --color-expense: #f0b4ad;
+  --color-expense-bg: #3b1d1a;
+  --color-danger-pending: #d98f87;
+  --color-info: #a1c5b3;
+  --color-info-bg: #14352a;
+  --overlay: rgba(0, 0, 0, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-background: #0b110e;
+    --color-surface: #111815;
+    --color-surface-muted: #222d27;
+    --color-surface-hover: #18211c;
+    --color-text: #f3efe5;
+    --color-text-secondary: #abb5ae;
+    --color-text-body: #d2cabb;
+    --color-border: #344139;
+    --color-border-subtle: #222d27;
+    --color-border-strong: #69746d;
+    --color-accent: #8ab39e;
+    --color-accent-hover: #a1c5b3;
+    --color-on-primary: #111815;
+    --color-primary-pending: #abb5ae;
+    --color-slab: #18211c;
+    --color-income: #a1c5b3;
+    --color-income-bg: #14352a;
+    --color-expense: #f0b4ad;
+    --color-expense-bg: #3b1d1a;
+    --color-danger-pending: #d98f87;
+    --color-info: #a1c5b3;
+    --color-info-bg: #14352a;
+    --overlay: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

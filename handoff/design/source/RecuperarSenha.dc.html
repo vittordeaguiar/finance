@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Recuperar senha</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+input:focus{outline:2px solid #183f32;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #f3efe5; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b;">
+<div style="background: #111815; color: #f3efe5; padding: 64px; display: flex; flex-direction: column; justify-content: space-between;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 28px; height: 28px; background: #8ab39e;"></div>
+<span style="font-size: 22px; font-weight: 700; letter-spacing: -0.03em;">Saldo.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 24px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8ab39e;">01 · FINANÇAS PESSOAIS</span>
+<h1 style="margin: 0; font-size: 72px; line-height: 1.02; font-weight: 600; letter-spacing: -0.045em;">Seu dinheiro, <span style="color: #8ab39e;">em ordem.</span></h1>
+<p style="margin: 0; max-width: 46ch; font-size: 18px; line-height: 1.65; color: #abb5ae;">Registre o que entra e o que sai. Saiba o seu saldo sem abrir planilha.</p>
+</div>
+<div style="display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #abb5ae; border-top: 1px solid #2a352e; padding-top: 24px;">
+<span>RECEITAS</span><span>·</span><span>DESPESAS</span><span>·</span><span>SALDO</span>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; padding: 64px;">
+<form style="width: 400px; display: flex; flex-direction: column;">
+<sc-if value="{{solicitar}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; gap: 24px; flex-grow: 1;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">RECUPERAR ACESSO</span>
+<h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Esqueceu a senha?</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #526058;">Informe o email da conta. Enviamos um link para você criar uma nova senha.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="r-email" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">EMAIL</label>
+<input id="r-email" type="email" value="voce@email.com" placeholder="voce@email.com" style="height: 48px; padding: 0 16px; font: inherit; font-size: 16px; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box;">
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<button type="submit" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;"><span>Enviar link</span><span>→</span></button>
+<a href="Login.dc.html" style="font-size: 15px; font-weight: 500; padding: 12px 0;">← Voltar para o login</a>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{enviado}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 24px; flex-grow: 1;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">EMAIL ENVIADO</span>
+<h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Confira sua caixa de entrada.</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #526058;">Se existir uma conta com <strong style="color: #17201b;">voce@email.com</strong>, o link chega em alguns minutos. Ele vale por 1 hora.</p>
+</div>
+<div style="padding: 14px 16px; background: #e7eee8; border-left: 3px solid #3f624f; display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #3f624f;">NÃO CHEGOU?</span>
+<span style="font-size: 14px; line-height: 1.5;">Veja a pasta de spam ou peça um novo envio.</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<button type="button" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #69746d; border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0 20px;">Reenviar email</button>
+<a href="Login.dc.html" style="font-size: 15px; font-weight: 500; padding: 12px 0;">← Voltar para o login</a>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{nova}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 24px; flex-grow: 1;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">NOVA SENHA</span>
+<h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Crie uma nova senha.</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #526058;">Depois de salvar, você entra direto na conta.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="r-nova" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">NOVA SENHA</label>
+<input id="r-nova" type="password" value="senhanova123" placeholder="" style="height: 48px; padding: 0 16px; font: inherit; font-size: 16px; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #526058;">MÍNIMO DE 8 CARACTERES</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="r-conf" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">CONFIRMAR NOVA SENHA</label>
+<input id="r-conf" type="password" value="senhanova123" placeholder="" style="height: 48px; padding: 0 16px; font: inherit; font-size: 16px; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box;">
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<button type="submit" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;"><span>Salvar nova senha</span><span>→</span></button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{expirado}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 24px; flex-grow: 1;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #b42318;">LINK INVÁLIDO</span>
+<h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Este link expirou.</h2>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #526058;">Links de recuperação valem por 1 hora e só funcionam uma vez. Peça um novo para continuar.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<button type="submit" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;"><span>Pedir novo link</span><span>→</span></button>
+<a href="Login.dc.html" style="font-size: 15px; font-weight: 500; padding: 12px 0;">← Voltar para o login</a>
+</div>
+</div>
+</sc-if>
+</form>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"etapa":{"editor":"enum","options":["solicitar","enviado","nova","expirado"],"default":"solicitar"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+var e = this.props.etapa || 'solicitar';
+return { solicitar: e === 'solicitar', enviado: e === 'enviado', nova: e === 'nova', expirado: e === 'expirado' };
+}
+}
+</script>
+</body>
+</html>

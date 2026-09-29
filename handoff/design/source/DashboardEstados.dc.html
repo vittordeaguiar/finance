@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Dashboard estados</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1024px; background: #f3efe5; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b; display: flex; flex-direction: column;">
+<header style="height: 64px; padding: 0 64px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d2cabb; flex-shrink: 0;">
+<div style="display: flex; align-items: center; gap: 12px;">
+<div style="width: 22px; height: 22px; background: #183f32;"></div>
+<span style="font-size: 20px; font-weight: 700; letter-spacing: -0.03em;">Saldo.</span>
+</div>
+<div style="display: flex; align-items: center; gap: 24px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #526058;">voce@email.com</span>
+<button type="button" style="height: 36px; padding: 0 14px; font: inherit; font-size: 14px; font-weight: 500; color: #17201b; background: transparent; border: 1px solid #d2cabb; border-radius: 2px; cursor: pointer;">Sair</button>
+</div>
+</header>
+<main style="padding: 48px 64px; display: flex; flex-direction: column; gap: 40px;">
+<div style="display: flex; align-items: flex-end; justify-content: space-between;">
+<div style="display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">01 · VISÃO GERAL</span>
+<h1 style="margin: 0; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.05;">Suas finanças.</h1>
+</div>
+<div style="display: flex; gap: 12px;">
+<button type="button" style="height: 48px; padding: 0 20px; font: inherit; font-size: 15px; font-weight: 600; color: #17201b; background: #fffaf0; border: 1px solid #69746d; border-radius: 2px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><span style="color: #b42318;">−</span>Adicionar despesa</button>
+<button type="button" style="height: 48px; padding: 0 20px; font: inherit; font-size: 15px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer; display: flex; align-items: center; gap: 10px;"><span style="color: #8ab39e;">+</span>Adicionar receita</button>
+</div>
+</div>
+<section style="background: #111815; color: #f3efe5; display: grid; grid-template-columns: 1.4fr 1fr 1fr;">
+<div style="padding: 32px 40px; display: flex; flex-direction: column; gap: 16px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #8ab39e;">SALDO ATUAL</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><div style="width: 300px; height: 56px; background: #222d27;"></div></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}"><span style="font-size: 56px; font-weight: 600; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; color: {{saldoColor}};">{{saldo}}</span></sc-if>
+<sc-if value="{{negativo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 12px;">
+<span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: #111815; background: #f0b4ad; border-radius: 2px;">↘ SALDO NEGATIVO</span>
+<span style="font-size: 14px; color: #abb5ae;">Despesas acima das receitas em R$ 312,40.</span>
+</div>
+</sc-if>
+<sc-if value="{{notNegativo}}" hint-placeholder-val="{{ true }}"><span style="font-size: 14px; color: #abb5ae;">Receitas menos despesas registradas.</span></sc-if>
+</div>
+<div style="padding: 32px 40px; border-left: 1px solid #2a352e; display: flex; flex-direction: column; gap: 16px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #abb5ae;">↗ TOTAL DE RECEITAS</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><div style="width: 200px; height: 32px; background: #222d27;"></div></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}"><span style="font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: #a1c5b3;">{{receitas}}</span></sc-if>
+<span style="font-size: 14px; color: #abb5ae;">{{nRec}}</span>
+</div>
+<div style="padding: 32px 40px; border-left: 1px solid #2a352e; display: flex; flex-direction: column; gap: 16px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #abb5ae;">↘ TOTAL DE DESPESAS</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><div style="width: 200px; height: 32px; background: #222d27;"></div></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}"><span style="font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; color: #f0b4ad;">{{despesas}}</span></sc-if>
+<span style="font-size: 14px; color: #abb5ae;">{{nDesp}}</span>
+</div>
+</section>
+<section style="display: flex; flex-direction: column; gap: 16px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between;">
+<div style="display: flex; align-items: baseline; gap: 16px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">02</span>
+<h2 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.03em;">Histórico de movimentações.</h2>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #526058;">MAIS RECENTES PRIMEIRO</span>
+</div>
+<div style="background: #fffaf0; border: 1px solid #d2cabb;">
+<div style="display: grid; grid-template-columns: 140px 1fr 180px 200px 104px; padding: 0 24px; height: 44px; align-items: center; border-bottom: 1px solid #d2cabb; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">
+<span>DATA</span><span>DESCRIÇÃO</span><span>TIPO</span><span style="text-align: right;">VALOR</span><span></span>
+</div>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite">
+<sc-for list="{{skeleton}}" as="s" hint-placeholder-count="6">
+<div style="display: grid; grid-template-columns: 140px 1fr 180px 200px 104px; padding: 0 24px; height: 56px; align-items: center; border-bottom: 1px solid #e0d9cb;">
+<div style="width: 90px; height: 12px; background: #e8e1d3;"></div>
+<div style="width: 240px; height: 14px; background: #e8e1d3;"></div>
+<div style="width: 96px; height: 22px; background: #e8e1d3;"></div>
+<div style="width: 120px; height: 16px; background: #e8e1d3; justify-self: end;"></div>
+<span></span>
+</div>
+</sc-for>
+<span style="display: block; padding: 16px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">CARREGANDO MOVIMENTAÇÕES…</span>
+</div>
+</sc-if>
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 32px 24px;">
+<div role="alert" style="padding: 20px 24px; background: #f8e8e6; border-left: 3px solid #b42318; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+<div style="display: flex; flex-direction: column; gap: 6px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #b42318;">ERRO AO CARREGAR</span>
+<span style="font-size: 16px;">Não foi possível buscar suas movimentações. Verifique a conexão e tente de novo.</span>
+</div>
+<button type="button" style="height: 44px; padding: 0 20px; font: inherit; font-size: 15px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #b42318; border-radius: 2px; cursor: pointer; white-space: nowrap;">Tentar novamente</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{negativo}}" hint-placeholder-val="{{ false }}">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+<div style="display: grid; grid-template-columns: 140px 1fr 180px 200px 104px; padding: 0 24px; height: 56px; align-items: center; border-bottom: 1px solid #e0d9cb;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #526058;">{{r.date}}</span>
+<span style="font-size: 16px; font-weight: 500;">{{r.desc}}</span>
+<span><span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; border-radius: 2px; color: {{r.fg}}; background: {{r.bg}};">{{r.arrow}} {{r.label}}</span></span>
+<span style="text-align: right; font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; color: {{r.fg}};">{{r.amount}}</span>
+<button type="button" aria-label="Excluir {{r.desc}}" style="justify-self: end; height: 36px; padding: 0 10px; font: inherit; font-size: 13px; font-weight: 500; color: #526058; background: transparent; border: 1px solid transparent; border-radius: 2px; cursor: pointer;">Excluir</button>
+</div>
+</sc-for>
+</sc-if>
+<sc-if value="{{vazio}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 72px 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; color: #183f32;">00 MOVIMENTAÇÕES</span>
+<h3 style="margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.03em;">Nada registrado ainda.</h3>
+<p style="margin: 0; max-width: 46ch; font-size: 16px; line-height: 1.65; color: #526058;">Registre a primeira receita ou despesa. O saldo se atualiza a cada lançamento.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">USE OS BOTÕES ACIMA ↗</span>
+</div>
+</sc-if>
+</div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"estado":{"editor":"enum","options":["vazio","carregando","erro","negativo"],"default":"vazio"},"$preview":{"width":1440,"height":1024}}'>
+class Component extends DCLogic {
+renderVals() {
+var e = this.props.estado || 'vazio';
+var v = e === 'vazio' ? ['R$ 0,00', '+ R$ 0,00', '− R$ 0,00', '0 entradas', '0 saídas']
+: e === 'erro' ? ['R$ —', '—', '—', 'Indisponível', 'Indisponível']
+: e === 'negativo' ? ['− R$ 312,40', '+ R$ 4.200,00', '− R$ 4.512,40', '1 entrada', '6 saídas']
+: ['', '', '', 'Carregando…', 'Carregando…'];
+var data = [
+['22 set 2026', 'Supermercado', 'd', 'R$ 412,80'],
+['19 set 2026', 'Conserto do carro', 'd', 'R$ 2.268,95'],
+['18 set 2026', 'Conta de luz', 'd', 'R$ 186,45'],
+['15 set 2026', 'Aluguel', 'd', 'R$ 1.450,00'],
+['10 set 2026', 'Internet', 'd', 'R$ 119,90'],
+['05 set 2026', 'Salário', 'r', 'R$ 4.200,00'],
+['03 set 2026', 'Farmácia', 'd', 'R$ 74,30']
+];
+var rows = data.map(function (x) {
+var r = x[2] === 'r';
+return { date: x[0], desc: x[1], label: r ? 'RECEITA' : 'DESPESA', arrow: r ? '↗' : '↘', fg: r ? '#2f6b4f' : '#b42318', bg: r ? '#e8f2ec' : '#f8e8e6', amount: (r ? '+ ' : '− ') + x[3] };
+});
+return {
+saldo: v[0], receitas: v[1], despesas: v[2], nRec: v[3], nDesp: v[4],
+loading: e === 'carregando', notLoading: e !== 'carregando',
+erro: e === 'erro', vazio: e === 'vazio', rows: rows,
+negativo: e === 'negativo', notNegativo: e !== 'negativo',
+saldoColor: e === 'negativo' ? '#f0b4ad' : '#f3efe5', skeleton: [1, 2, 3, 4, 5, 6]
+};
+}
+}
+</script>
+</body>
+</html>

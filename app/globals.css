@@ -1,0 +1,94 @@
+@import "tailwindcss";
+@import "../handoff/design/tokens.css";
+
+/* Breakpoint da doc 03: entre 768 e 1100px o desktop compacta (tabela sem coluna TIPO, slab menor). */
+@theme {
+  /* V4: 1100px de conteúdo + 240px da barra lateral. O desktop compacta na mesma largura útil de antes. */
+  --breakpoint-wide: 83.75rem; /* 1340px */
+}
+
+/* Os HTMLs do design não definem line-height: usam o `normal` do navegador. O preflight usa 1.5. */
+@layer base {
+  html {
+    line-height: normal;
+  }
+}
+
+/* Diálogo: sheet sobe de baixo (mobile); modal faz fade + 8px (desktop). Ver docs/02 "Movimento". */
+.saldo-dialog::backdrop {
+  background: rgba(23, 32, 27, 0.4); /* --overlay; ::backdrop não herda variáveis em todos os navegadores */
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+/* V4: overlay do tema escuro (mesmo valor de --overlay em tokens.css). */
+:root[data-theme="dark"] .saldo-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .saldo-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+/* Saída animada (components/ui/Dialog.tsx): o overlay some junto com o sheet/modal. */
+.saldo-dialog.is-closing::backdrop {
+  opacity: 0;
+}
+.saldo-dialog[open] {
+  /* V5: o sheet sobe e passa 2px do ponto antes de assentar (docs/12). */
+  animation: saldo-sheet-in 260ms var(--ease-emphasized);
+}
+@media (min-width: 768px) {
+  .saldo-dialog[open] {
+    animation: saldo-modal-in var(--duration-fast) var(--ease-emphasized);
+  }
+}
+@keyframes saldo-sheet-in {
+  from { transform: translateY(100%); }
+  80% { transform: translateY(-2px); }
+  to { transform: translateY(0); }
+}
+@keyframes saldo-modal-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+html:has(.saldo-dialog[open]) {
+  overflow: hidden;
+}
+
+/* V5 (docs/12): botão primário pressionado. Faixa `accent-hover` preenche da esquerda, sem escalar o botão. */
+.saldo-press {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.saldo-press::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-accent-hover);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-fast) var(--ease-emphasized);
+}
+.saldo-press:active:not(:disabled)::before {
+  transform: scaleX(1);
+}
+
+/* V5: skeleton pulsa (único movimento contínuo, docs/12). Opacidade em vez de brilho: a marca não usa gradiente. */
+.saldo-pulse {
+  animation: saldo-pulse 1.2s var(--ease-standard) infinite alternate;
+}
+@keyframes saldo-pulse {
+  to { opacity: 0.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saldo-pulse { animation: none; }
+}
+
+/* V5: foco de teclado aparece com transição de cor. Em @layer base para as utilities `transition-*` vencerem. */
+@layer base {
+  :where(button, a, input, [tabindex]) {
+    transition-property: color, background-color, border-color, outline-color;
+    transition-duration: var(--duration-instant);
+    transition-timing-function: var(--ease-standard);
+  }
+}

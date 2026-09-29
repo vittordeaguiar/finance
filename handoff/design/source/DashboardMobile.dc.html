@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Dashboard mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #f3efe5; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b;">
+<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 96px; overflow: hidden; display: flex; flex-direction: column;">
+<header style="height: 56px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d2cabb; flex-shrink: 0;">
+<div style="display: flex; align-items: center; gap: 10px;">
+<div style="width: 20px; height: 20px; background: #183f32;"></div>
+<span style="font-size: 19px; font-weight: 700; letter-spacing: -0.03em;">Saldo.</span>
+</div>
+<button type="button" style="height: 44px; padding: 0 12px; margin-right: -12px; font: inherit; font-size: 15px; font-weight: 500; color: #17201b; background: transparent; border: 0; cursor: pointer;">Sair</button>
+</header>
+<section aria-label="Resumo" style="background: #111815; color: #f3efe5; flex-shrink: 0;">
+<div style="padding: 24px 20px 20px; display: flex; flex-direction: column; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #8ab39e;">SALDO ATUAL</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+<div style="width: 220px; height: 40px; background: #222d27;"></div>
+</sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 40px; font-weight: 600; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; color: {{saldoColor}};">{{saldo}}</span>
+</sc-if>
+<sc-if value="{{negativo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<span style="align-self: flex-start; display: inline-flex; align-items: center; height: 24px; padding: 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: #111815; background: #f0b4ad; border-radius: 2px;">↘ SALDO NEGATIVO</span>
+<span style="font-size: 14px; line-height: 1.5; color: #abb5ae;">As despesas superaram as receitas em R$ 312,40.</span>
+</div>
+</sc-if>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid #2a352e;">
+<div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 8px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #abb5ae;">↗ RECEITAS</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><div style="width: 110px; height: 22px; background: #222d27;"></div></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}"><span style="font-size: 19px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #a1c5b3;">{{receitas}}</span></sc-if>
+</div>
+<div style="padding: 16px 20px; border-left: 1px solid #2a352e; display: flex; flex-direction: column; gap: 8px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #abb5ae;">↘ DESPESAS</span>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}"><div style="width: 110px; height: 22px; background: #222d27;"></div></sc-if>
+<sc-if value="{{notLoading}}" hint-placeholder-val="{{ true }}"><span style="font-size: 19px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #f0b4ad;">{{despesas}}</span></sc-if>
+</div>
+</div>
+</section>
+<section style="padding: 24px 20px 0; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between;">
+<div style="display: flex; align-items: baseline; gap: 10px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">02</span>
+<h2 style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.03em;">Histórico.</h2>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: #526058;">MAIS RECENTES PRIMEIRO</span>
+</div>
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+<div aria-live="polite" style="display: flex; flex-direction: column; background: #fffaf0; border: 1px solid #d2cabb;">
+<span style="padding: 12px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058; border-bottom: 1px solid #e0d9cb;">CARREGANDO MOVIMENTAÇÕES…</span>
+<sc-for list="{{skeleton}}" as="s" hint-placeholder-count="5">
+<div style="height: 68px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e0d9cb;">
+<div style="display: flex; flex-direction: column; gap: 8px;"><div style="width: 140px; height: 14px; background: #e8e1d3;"></div><div style="width: 90px; height: 10px; background: #e8e1d3;"></div></div>
+<div style="width: 80px; height: 16px; background: #e8e1d3;"></div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{erro}}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="padding: 16px; background: #f8e8e6; border-left: 3px solid #b42318; display: flex; flex-direction: column; gap: 12px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #b42318;">ERRO AO CARREGAR</span>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #17201b;">Não foi possível buscar suas movimentações. Verifique a conexão e tente de novo.</p>
+<button type="button" style="height: 44px; font: inherit; font-size: 15px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #b42318; border-radius: 2px; cursor: pointer;">Tentar novamente</button>
+</div>
+</sc-if>
+<sc-if value="{{vazio}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 32px 20px; background: #fffaf0; border: 1px solid #d2cabb; display: flex; flex-direction: column; gap: 12px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">00 MOVIMENTAÇÕES</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15;">Nada registrado ainda.</h3>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: #526058;">Registre a primeira receita ou despesa. O saldo se atualiza a cada lançamento.</p>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058; padding-top: 8px; border-top: 1px solid #e0d9cb;">USE OS BOTÕES ABAIXO ↓</span>
+</div>
+</sc-if>
+<sc-if value="{{hasList}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-direction: column; background: #fffaf0; border: 1px solid #d2cabb;">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<button type="button" aria-label="Detalhes de {{r.desc}}" style="width: 100%; min-height: 68px; padding: 12px 12px 12px 16px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px; font: inherit; color: inherit; text-align: left; border: 0; border-bottom: 1px solid #e0d9cb; border-radius: 0; background: {{r.rowBg}}; cursor: pointer;">
+<span style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+<span style="font-size: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{r.desc}}</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #526058;">{{r.date}} · <span style="color: {{r.fg}}; font-weight: 500;">{{r.arrow}} {{r.label}}</span></span>
+</span>
+<span style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; color: {{r.fg}};">{{r.amount}}</span><span aria-hidden="true" style="font-size: 18px; color: #69746d;">›</span></span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+</section>
+</div>
+<sc-if value="{{toast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 108px; padding: 14px 16px; background: #111815; color: #f3efe5; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 24px 64px rgba(23, 32, 27, 0.2);">
+<div style="display: flex; flex-direction: column; gap: 4px;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #8ab39e;">{{toastLabel}}</span>
+<span style="font-size: 15px;">{{toastText}}</span>
+</div>
+<button type="button" aria-label="Fechar aviso" style="width: 44px; height: 44px; margin-right: -10px; font: inherit; font-size: 20px; color: #abb5ae; background: transparent; border: 0; cursor: pointer;">×</button>
+</div>
+</sc-if>
+<nav aria-label="Adicionar movimentação" style="position: absolute; left: 0; right: 0; bottom: 0; height: 96px; padding: 12px 16px 28px; box-sizing: border-box; background: #f3efe5; border-top: 1px solid #d2cabb; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+<button type="button" style="height: 56px; font: inherit; font-size: 16px; font-weight: 600; color: #17201b; background: #fffaf0; border: 1px solid #69746d; border-radius: 2px; cursor: pointer;"><span style="color: #b42318;">−</span> Despesa</button>
+<button type="button" style="height: 56px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer;"><span style="color: #8ab39e;">+</span> Receita</button>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"estado":{"editor":"enum","options":["padrao","vazio","carregando","erro","sucesso","negativo","excluido"],"default":"padrao"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var e = this.props.estado || 'padrao';
+var data = [
+['22 SET', 'Supermercado', 'd', 'R$ 412,80'],
+['20 SET', 'Freelance landing page', 'r', 'R$ 1.800,00'],
+['18 SET', 'Conta de luz', 'd', 'R$ 186,45'],
+['15 SET', 'Aluguel', 'd', 'R$ 1.450,00'],
+['12 SET', 'Venda de bicicleta', 'r', 'R$ 650,00'],
+['10 SET', 'Internet', 'd', 'R$ 119,90'],
+['05 SET', 'Salário', 'r', 'R$ 4.200,00'],
+['03 SET', 'Farmácia', 'd', 'R$ 74,30']
+];
+if (e === 'negativo') data = [
+['22 SET', 'Supermercado', 'd', 'R$ 412,80'],
+['19 SET', 'Conserto do carro', 'd', 'R$ 2.268,95'],
+['18 SET', 'Conta de luz', 'd', 'R$ 186,45'],
+['15 SET', 'Aluguel', 'd', 'R$ 1.450,00'],
+['10 SET', 'Internet', 'd', 'R$ 119,90'],
+['05 SET', 'Salário', 'r', 'R$ 4.200,00'],
+['03 SET', 'Farmácia', 'd', 'R$ 74,30']
+];
+if (e === 'excluido') data.shift();
+if (e === 'sucesso') data.unshift(['AGORA', 'Consultoria', 'r', 'R$ 500,00', true]);
+var rows = data.map(function (x) {
+var r = x[2] === 'r';
+return {
+date: x[0], desc: x[1],
+label: r ? 'RECEITA' : 'DESPESA', arrow: r ? '↗' : '↘',
+fg: r ? '#2f6b4f' : '#b42318',
+amount: (r ? '+ ' : '− ') + x[3],
+rowBg: x[4] ? '#e8f2ec' : 'transparent'
+};
+});
+var v = {
+padrao: ['R$ 4.406,55', '+ R$ 6.650,00', '− R$ 2.243,45'],
+sucesso: ['R$ 4.906,55', '+ R$ 7.150,00', '− R$ 2.243,45'],
+vazio: ['R$ 0,00', '+ R$ 0,00', '− R$ 0,00'],
+excluido: ['R$ 4.819,35', '+ R$ 6.650,00', '− R$ 1.830,65'],
+negativo: ['− R$ 312,40', '+ R$ 4.200,00', '− R$ 4.512,40'],
+erro: ['R$ —', '—', '—'],
+carregando: ['', '', '']
+}[e] || ['', '', ''];
+return {
+rows: rows, skeleton: [1, 2, 3, 4, 5],
+saldo: v[0], receitas: v[1], despesas: v[2],
+loading: e === 'carregando', notLoading: e !== 'carregando',
+erro: e === 'erro', vazio: e === 'vazio', sucesso: e === 'sucesso',
+hasList: e === 'padrao' || e === 'sucesso' || e === 'negativo' || e === 'excluido',
+toast: e === 'sucesso' || e === 'excluido',
+toastLabel: e === 'excluido' ? 'DESPESA EXCLUÍDA' : 'RECEITA SALVA',
+toastText: e === 'excluido' ? 'Supermercado · saldo agora é R$ 4.819,35.' : '+ R$ 500,00 somados ao saldo.',
+negativo: e === 'negativo',
+saldoColor: e === 'negativo' ? '#f0b4ad' : '#f3efe5'
+};
+}
+}
+</script>
+</body>
+</html>

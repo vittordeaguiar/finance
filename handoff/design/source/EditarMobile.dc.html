@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Editar movimentação mobile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:#17201b;background:#f3efe5}
+a{color:#183f32}a:hover{color:#0d281f}
+input:focus{outline:2px solid #183f32;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; font-family: 'Space Grotesk', system-ui, sans-serif; color: #17201b;">
+<dc-import name="DashboardMesMobile" hint-size="390px,844px"></dc-import>
+<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(23, 32, 27, 0.4);"></div>
+<form role="dialog" aria-labelledby="ed-t" style="position: absolute; left: 0; right: 0; bottom: 0; background: #fffaf0; border-top: 1px solid #d2cabb; box-shadow: 0 24px 64px rgba(23, 32, 27, 0.2); display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: center; padding-top: 10px;"><div style="width: 40px; height: 4px; background: #d2cabb;"></div></div>
+<sc-if value="{{detalhe}}" hint-placeholder-val="{{ false }}">
+<div style="padding: 12px 20px 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #e0d9cb;">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">MOVIMENTAÇÃO</span>
+<button type="button" aria-label="Fechar" style="width: 44px; height: 44px; margin-right: -12px; font: inherit; font-size: 22px; color: #526058; background: transparent; border: 0; cursor: pointer;">×</button>
+</div>
+<h2 style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.03em;">Detalhes.</h2>
+</div>
+<div style="padding: 20px;">
+<div style="padding: 16px; background: #f3efe5; border: 1px solid #e0d9cb; display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+<span style="font-size: 17px; font-weight: 500;">Supermercado</span>
+<span style="font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; color: #b42318; white-space: nowrap;">− R$ 412,80</span>
+</div>
+<div style="display: flex; align-items: center; gap: 10px;">
+<span style="display: inline-flex; align-items: center; height: 24px; padding: 0 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: #b42318; background: #f8e8e6; border-radius: 2px;">↘ DESPESA</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #526058;">22 SET 2026</span>
+</div>
+</div>
+</div>
+<div style="padding: 12px 20px 28px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #e0d9cb; background: #f3efe5;">
+<button type="button" style="height: 56px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: #17201b; border: 0; border-radius: 2px; cursor: pointer;">Editar movimentação</button>
+<button type="button" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #b42318; background: transparent; border: 1px solid #b42318; border-radius: 2px; cursor: pointer;">Excluir movimentação</button>
+</div>
+</sc-if>
+<sc-if value="{{editar}}" hint-placeholder-val="{{ true }}">
+<div style="padding: 12px 20px 16px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #e0d9cb;">
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #183f32;">EDITAR MOVIMENTAÇÃO</span>
+<button type="button" aria-label="Fechar" disabled="{{saving}}" style="width: 44px; height: 44px; margin-right: -12px; font: inherit; font-size: 22px; color: #526058; background: transparent; border: 0; cursor: pointer;">×</button>
+</div>
+<h2 id="ed-t" style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;">Editar despesa.</h2>
+</div>
+<div style="padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;">
+<fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px;">
+<legend style="padding: 0; margin-bottom: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">TIPO</legend>
+<div role="radiogroup" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid #d2cabb; border-radius: 2px;">
+<button type="button" role="radio" aria-checked="false" style="height: 48px; font: inherit; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: #526058; background: #fffaf0; border: 0; border-right: 1px solid #d2cabb; cursor: pointer;">↗ RECEITA</button>
+<button type="button" role="radio" aria-checked="true" style="height: 48px; font: inherit; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; color: #b42318; background: #f8e8e6; border: 0; box-shadow: inset 0 0 0 2px #b42318; cursor: pointer;">↘ DESPESA</button>
+</div>
+</fieldset>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="e-desc" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">DESCRIÇÃO</label>
+<input id="e-desc" type="text" value="Supermercado" disabled="{{saving}}" style="height: 52px; padding: 0 16px; font: inherit; font-size: 17px; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box; opacity: {{op}};">
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<div style="display: flex; align-items: baseline; justify-content: space-between;">
+<label for="e-val" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">VALOR</label>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #183f32;">ALTERADO · ERA R$ 412,80</span>
+</div>
+<div style="display: flex; height: 60px; border: 1px solid #183f32; border-radius: 2px; background: #fffaf0; opacity: {{op}};">
+<span style="display: flex; align-items: center; padding: 0 16px; font-size: 18px; font-weight: 600; color: #b42318; background: #f8e8e6; border-right: 1px solid #d2cabb; white-space: nowrap;">− R$</span>
+<input id="e-val" type="text" inputmode="decimal" value="432,80" disabled="{{saving}}" style="flex-grow: 1; min-width: 0; padding: 0 16px; font: inherit; font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; color: #17201b; background: transparent; border: 0;">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px;">
+<label for="e-data" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #526058;">DATA</label>
+<input id="e-data" type="date" value="2026-09-22" max="2026-09-23" disabled="{{saving}}" style="height: 52px; padding: 0 16px; font: inherit; font-size: 17px; font-variant-numeric: tabular-nums; color: #17201b; background: #fffaf0; border: 1px solid #d2cabb; border-radius: 2px; box-sizing: border-box; opacity: {{op}};">
+</div>
+<div style="padding: 12px 14px; background: #e7eee8; border-left: 3px solid #3f624f; font-size: 14px; line-height: 1.5;">O saldo passa de <strong style="font-variant-numeric: tabular-nums;">R$ 5.839,75</strong> para <strong style="font-variant-numeric: tabular-nums;">R$ 5.819,75</strong>.</div>
+</div>
+<div style="padding: 12px 20px 28px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid #e0d9cb; background: #f3efe5;">
+<button type="submit" disabled="{{saving}}" aria-busy="{{saving}}" style="height: 56px; font: inherit; font-size: 16px; font-weight: 600; color: #fffaf0; background: {{saveBg}}; border: 0; border-radius: 2px; cursor: pointer;">{{saveLabel}}</button>
+<button type="button" disabled="{{saving}}" style="height: 52px; font: inherit; font-size: 16px; font-weight: 600; color: #17201b; background: transparent; border: 1px solid #d2cabb; border-radius: 2px; cursor: pointer;">Cancelar</button>
+</div>
+</sc-if>
+</form>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"etapa":{"editor":"enum","options":["detalhe","editar","salvando"],"default":"detalhe"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var e = this.props.etapa || 'detalhe';
+var saving = e === 'salvando';
+return {
+detalhe: e === 'detalhe', editar: e !== 'detalhe', saving: saving,
+op: saving ? '0.6' : '1',
+saveBg: saving ? '#526058' : '#17201b',
+saveLabel: saving ? 'Salvando…' : 'Salvar alterações'
+};
+}
+}
+</script>
+</body>
+</html>
